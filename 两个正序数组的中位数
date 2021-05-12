@@ -1,0 +1,55 @@
+题目：
+  给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+示例：
+  输入：nums1 = [1,3], nums2 = [2]
+  输出：2.00000
+  解释：合并数组 = [1,2,3] ，中位数 2
+答案：
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArrays = function(nums1, nums2) {
+    //第一种思路 合并两个数组 
+        //新建一个长度为两个数组长度之和的大数组
+            //分别监控两个数组 将两个数组中较小的放入大数组中 
+                //合并完毕以后大数组的中位数即为所求
+
+    //第二种思路 不合并两个数组
+        //两个数组的长度之和已知 即知道所求中位数的数组下标之和
+            //维护两个指针 初始时指向数组开始位置 每次将指向较小值的指针后移一位 
+                //如果一个指针已经到达数组末尾，则只需要移动另一个数组的指针 直到达到中位数的位置即可
+    let totalLength = nums1.length + nums2.length;
+    let totalArray = [];
+    for(let i = 0, j = 0; i + j < totalLength; )//i为nums1的指针 j为nums2的指针
+    {
+        //都还未遍历完两个数组
+        if(i < nums1.length && j < nums2.length)
+        {
+            //小数入大数组
+            totalArray[i + j] = Math.min(nums1[i], nums2[j]);
+            //小数所在数组的指针右移
+            ( nums1[i] == Math.min(nums1[i], nums2[j]) ) ? (i++) : (j++);
+        }
+        //数组最少有一个已遍历完
+        else{
+            if(i == nums1.length && j < nums2.length){
+                totalArray[i + j] = nums2[j];
+                j++;
+            }
+            if(i < nums1.length && j == nums2.length){
+                totalArray[i + j] = nums1[i];
+                i++;
+            }
+        }
+    }
+
+    if(totalLength % 2){
+        //数组有奇数个元素 返回中间元素
+        return totalArray[Math.floor(totalLength / 2)];
+    }
+    else{
+        return (totalArray[Math.floor(totalLength / 2)] + totalArray[Math.floor(totalLength / 2) - 1]) / 2
+    }
+};
