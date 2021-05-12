@@ -1,0 +1,52 @@
+题目：
+  给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+示例：
+  输入：l1 = [2,4,3], l2 = [5,6,4]
+  输出：[7,0,8]
+  解释：342 + 465 = 807.
+
+答案：
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function(l1, l2) {
+    const resultNode = new ListNode(); //存储结果
+    let current  = resultNode; //指向结果链表的尾指针
+    let extra = 0; //进位标志
+
+    while( l1 || l2) //链表不为空时循环
+    {
+        let sum = extra;
+        if(l1) //当L1不为空时
+        {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if(l2) // 当l2不为空时
+        {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+
+        //处理进位 并且延长结果链表
+        extra = Math.floor(sum / 10);
+        current.next = new ListNode(sum % 10);
+        current = current.next;
+    }
+
+    if(extra) //最后一位有进位
+    {
+        current.next = new ListNode(extra);
+    }
+    
+    return resultNode.next;
+};
