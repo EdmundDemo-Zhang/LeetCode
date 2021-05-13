@@ -1,0 +1,54 @@
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var longestPalindrome = function(s) {
+    let sLength = s.length;
+    //字符串仅有一位时 即为所求
+    if(sLength < 2){
+        return s;
+    }
+
+    let answerLength = 1; //最长回文子串的长度
+    let beginPointer = 0;
+
+    //暴力解法 
+    //枚举所有情况时 只要枚举比当前找到的回文子串长的子串 
+    let charArray = s.split("");//转换成字符数组
+    console.log(charArray);
+
+    //枚举所有长度严格大于1的子串 charArray[i...j]
+    for(let i = 0; i < sLength - 1; i++){
+        for(let j = i + 1; j< sLength; j++)
+        {
+            //子串长度比当前最大回文子串长度大 且 为回文子串
+            if((j - i + 1) > answerLength && 
+            validPalindromic(charArray, i, j)){
+                answerLength = j - i + 1;//更改最大回文子串长度
+                beginPointer = i;
+            }
+        }
+    }
+
+    console.log(s.slice(beginPointer, beginPointer + answerLength));
+    return s.slice(beginPointer, beginPointer + answerLength );
+
+};
+
+//判断字符串是否为回文字符串
+/*
+**charArray 为字符串
+**left、right为需要判断的字符串的左右位置
+*/
+function validPalindromic(charArray, left, right){
+    while(left < right)
+    {
+        if(charArray[left] != charArray[right])
+        {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
